@@ -1,0 +1,14 @@
+- name: Pulling Docker image
+  hosts: web
+  tasks:
+  - name: httpd image pulling
+    docker_image:
+      name: httpd:latest
+      source: pull
+    register: a
+    
+  - name: Checking the pulling status
+    debug:
+      var: a.failed
+
+

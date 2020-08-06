@@ -1,0 +1,29 @@
+- name: Creating Docker container
+  hosts: web
+  tasks:
+
+  - name: Copy html file to the container 
+    copy:
+      src: linux.html
+      dest: /root/website/
+    register: a
+
+  - name: Checking the copy of files
+    debug:
+      var: a
+ 
+  - name: Creating Docker container using HTTPD image
+    docker_container:
+      name: web_container
+      image: httpd
+      ports: 
+      - "1234:80"
+      volumes:
+      - /root/website/:/usr/local/apache2/htdocs/
+    register: b
+    when: a.failed == false
+
+  - name: Checking the container status
+    debug:
+      var: b
+
